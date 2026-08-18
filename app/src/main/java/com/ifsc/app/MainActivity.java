@@ -2,13 +2,17 @@ package com.ifsc.app;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     int contador =0;
@@ -21,14 +25,44 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+
         });
 
         Button button = findViewById(R.id.button);
         TextView textView = findViewById(R.id.textView);
+        EditText edmin,edmax;
+        edmin = findViewById(R.id.edMin);
+        edmax = findViewById(R.id.edMax);
+        textView.setText("");
+
 
         button.setOnClickListener(v -> {
-            contador++;
-            textView.setText(Integer.toString(contador));
+
+            String smin= edmin.getText().toString();
+            String smax= edmax.getText().toString();
+
+            if(smin.isEmpty()){
+                edmin.setError("Informe um inteiro");
+                return;
+            }
+
+            if(smax.isEmpty()){
+                edmax.setError("Informe um inteiro");
+                return;
+            }
+
+            int min = Integer.parseInt(smin);
+            int max = Integer.parseInt(smax);
+
+            if(min >= max){
+                Toast.makeText(this, "Defina Minimo-Maximo", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Random random = new Random();
+            int randow = random.nextInt(min,max);
+
+            textView.setText(Integer.toString(randow));
 
         });
 
